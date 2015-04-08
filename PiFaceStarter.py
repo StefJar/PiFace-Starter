@@ -13,6 +13,7 @@ import pifacecad
 import time
 import threading
 import stat
+import argparse
 
 def checkExecutableProgram(filename):
     executable = stat.S_IEXEC | stat.S_IXGRP | stat.S_IXOTH
@@ -149,9 +150,19 @@ if __name__ == '__main__':
     global gEndBarrier
     global exitFlag
 
+
+    print('PiFace Comand and Control Starter\nenter "python PiFaceStarter.py -h" for help')
+    
+    parser = argparse.ArgumentParser(description='PiFace Comand and Control Starter')
+    parser.add_argument('-p','--path', help='the search path for the executabels. Default is the user dir.', default=os.path.expanduser("~"))
+    
+    args = vars(parser.parse_args())
+
+
     cad = None
     listener = None
-    gFL = getExecutableFileList(os.path.expanduser("~"))
+    
+    gFL = getExecutableFileList(args['path'])
     gFLlen = len(gFL)
     gIndx = -1 if gFLlen < 1 else 0
     gEndBarrier = None
